@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load promotion_tags %}
+
+{% block styles %}
+    {% comment %}
+        If you are developing Oscar's CSS, or overriding Oscar's CSS
+        files in your project, then set OSCAR_USE_LESS = True in your
+        settings file. This will enable the on-the-fly less compiler.
+    {% endcomment %}
+    {% if use_less %}
+        <link rel="stylesheet/less" type="text/css" href="{% static "less/styles.less" %}" />
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{% static "css/styles.css" %}" />
+    {% endif %}
+    <!-- Fontawesome css -->
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <!-- Ionicons css -->
+    <link rel="stylesheet" href="{% static "css/ionicons.min.css" %}">
+    <!-- linearicons css -->
+    <link rel="stylesheet" href="{% static "css/linearicons.css" %}">
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{% static "css/nice-select.css" %}">
+    <!-- Jquery fancybox css -->
+    <link rel="stylesheet" href="{% static "css/jquery.fancybox.css" %}">
+    <!-- Jquery ui price slider css -->
+    <link rel="stylesheet" href="{% static "css/jquery-ui.min.css" %}">
+    <!-- Meanmenu css -->
+    <link rel="stylesheet" href="{% static "css/meanmenu.min.css" %}">
+    <!-- Nivo slider css -->
+    <link rel="stylesheet" href="{% static "css/nivo-slider.css" %}">
+    <!-- Owl carousel css -->
+    <link rel="stylesheet" href="{% static "css/owl.carousel.min.css" %}">
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="{% static "css/bootstrap.min.css" %}">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{% static "css/default.css" %}">
+    <!-- Responsive css -->
+    <link rel="stylesheet" href="{% static "css/responsive.css" %}">
+{% endblock %}
+
+{% block layout %}
+    {# Top-horizontal bar with account, notifictions, dashboard links #}
+    {% include "partials/nav_accounts.html" %}
+
+    {# Site logo/title, mini-basket, browse dropdown and searchbox #}
+    <header class="header container-fluid">
+        <div class="page_inner">
+            <div class="row">
+                {% include "partials/brand.html" %}
+                {# Mini-basket wrapped in a block so some templates can now display it #}
+                {% block mini_basket %}{% include "partials/mini_basket.html" %}{% endblock %}
+            </div>
+        </div>
+        {% block navigation %}
+            {% include "partials/nav_primary.html" %}
+        {% endblock %}
+    </header>
+
+    {# Main content of page - other layout templates may override this block #}
+    {% block content_wrapper %}
+        <div class="container-fluid page">
+            <div class="page_inner">
+                {% block breadcrumbs %}{% endblock %}
+                {% block header %}
+                    <div class="page-header action">
+                        <h1>{% block headertext %}{% endblock %}</h1>
+                    </div>
+                {% endblock %}
+                {% include "partials/alert_messages.html" %}
+                {% block subnavigation %}{% endblock %}
+                <div class="content">
+                    {% block subheader %}{% endblock subheader %}
+
+                    {# Render promotions #}
+                    <div id="promotions">
+                        {% for promotion in promotions_page %}
+                            {% render_promotion promotion %}
+                        {% endfor %}
+                    </div>
+
+                    {# Div exists for AJAX updates to entire content section #}
+                    <div id="content_inner">{% block content %}{% endblock %}</div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% include "partials/footer.html" %}
+{% endblock %}
+
+{% block cdn_scripts %}
+  {{ block.super }}
+  {% if use_less and debug %}
+    {# Load the on-the-fly less compiler. Never do this in production. #}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+  {% endif %}
+{% endblock %}
+
+{# Local scripts #}
+{% block scripts %}
+    {{ block.super }}
+    <!-- jquery 3.2.1 -->
+    <script src="{% static "js/vendor/jquery-3.2.1.min.js" %}"></script>
+    <!-- Countdown js -->
+    <script src="{% static "js/jquery.countdown.min.js" %}"></script>
+    <!-- Mobile menu js -->
+    <script src="{% static "js/jquery.meanmenu.min.js" %}"></script>
+    <!-- ScrollUp js -->
+    <script src="{% static "js/jquery.scrollUp.js" %}"></script>
+    <!-- Nivo slider js -->
+    <script src="{% static "js/jquery.nivo.slider.js" %}"></script>
+    <!-- Fancybox js -->
+    <script src="{% static "js/jquery.fancybox.min.js" %}"></script>
+    <!-- Jquery nice select js -->
+    <script src="{% static "js/jquery.nice-select.min.js" %}"></script>
+    <!-- Jquery ui price slider js -->
+    <script src="{% static "js/jquery-ui.min.js" %}"></script>
+    <!-- Owl carousel -->
+    <script src="{% static "js/owl.carousel.min.js" %}"></script>
+    <!-- Bootstrap popper js -->
+    <script src="{% static "js/popper.min.js" %}"></script>
+    <!-- Bootstrap js -->
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <!-- Plugin js -->
+    <script src="{% static "js/plugins.js" %}"></script>
+    <!-- Main activaion js -->
+    <script src="{% static "js/main.js" %}"></script>
+{% endblock %}
+
+{% block extrascripts %}
+    {% include "partials/extrascripts.html" %}
+    {{ block.super }}
+{% endblock %}
+
+{% block onbodyload %}
+    {{ block.super }}
+    oscar.init();
+{% endblock %}
