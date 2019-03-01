@@ -3,13 +3,18 @@ import os
 from oscar.defaults import *
 from oscar import get_core_apps
 from oscar import OSCAR_MAIN_TEMPLATE_DIR
-location = lambda x: os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', x)
+
+
+def location(x): return os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), '..', x)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Quick-start development settings - unsuitable for production
@@ -144,8 +149,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = STATIC_DIR
-STATICFILES_DIRS = []
+STATIC_ROOT = location('public/static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = (
+    location('static/'),
+)
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
@@ -171,3 +179,5 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 
 EMAIL_SUBJECT_PREFIX = '[Hosp Shop] '
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+OSCAR_SHOP_NAME = 'Hosp'
