@@ -1,8 +1,19 @@
+{% load currency_filters %}
+{% load category_tags %}
 {% load i18n %}
 
-<form method="get" action="{% url 'search:search' %}" class="navbar-form navbar-right">
+<form method="get" action="{% url 'search:search' %}">
     <div class="form-group">
-        {{ search_form.q }}
+        <select class="bootstrap-select" name="poscats">
+            {% category_tree depth=1 as tree_categories %}
+            <option value="0">{% trans "All products" %}</option>
+            {% if tree_categories %}
+                {% for tree_category, info in tree_categories %}
+                    <option value="{{ forloop.counter }}">{{ tree_category.name }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
     </div>
-    <input type="submit" value="{% trans "Search" %}" class="btn btn-default" />
+    {{ search_form.q }}
+    <button><i class="lnr lnr-magnifier"></i></button>
 </form>

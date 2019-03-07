@@ -10,3 +10,9 @@ class ProductForm(base_forms.ProductForm):
             'out_of_stock', 'bestseller',
             'is_new', 'is_discountable', 'structure',
             'markdown', 'markdown_reason')
+
+class Category(base_forms.CategoryForm):
+    class Meta:
+        fields = (
+            'format_class'
+        )

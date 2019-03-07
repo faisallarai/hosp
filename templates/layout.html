@@ -34,21 +34,12 @@
     <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
 {% endblock %}
 
+<!-- Main Wrapper Start Here -->
+<div class="wrapper">
 {% block layout %}
     {# Top-horizontal bar with account, notifictions, dashboard links #}
     {% include "partials/nav_accounts.html" %}
-
-    {# Site logo/title, mini-basket, browse dropdown and searchbox #}
-    <header class="header container-fluid">
-        <div class="page_inner">
-            <div class="row">
-                {% include "partials/brand.html" %}
-            </div>
-        </div>
-        {% block navigation %}
-            {% include "partials/nav_primary.html" %}
-        {% endblock %}
-    </header>
+    
 
     {# Main content of page - other layout templates may override this block #}
     {% block content_wrapper %}
@@ -81,6 +72,7 @@
 
     {% include "partials/footer.html" %}
 {% endblock %}
+</div>
 
 {% block cdn_scripts %}
   {{ block.super }}
@@ -119,6 +111,8 @@
     <script src="{% static 'js/plugins.js' %}"></script>
     <!-- Main activaion js -->
     <script src="{% static 'js/main.js' %}"></script>
+    <!-- Oscar -->
+    <script src="{% static 'oscar/js/oscar/ui.js' %}"></script>
 {% endblock %}
 
 {% block extrascripts %}
